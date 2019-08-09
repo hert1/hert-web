@@ -4,7 +4,9 @@ import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
-  userInfo: ''
+  userInfo: '',
+  introduction: '',
+  permissions: []
 }
 
 const mutations = {
@@ -13,6 +15,9 @@ const mutations = {
   },
   SET_USER_INFO: (state, userInfo) => {
     state.userInfo = userInfo
+  },
+  SET_PERMISSIONS: (state, permissions) => {
+    state.permissions = permissions
   }
 }
 
@@ -40,7 +45,14 @@ const actions = {
 
         if (!data) {
           reject('Verification failed, please Login again.')
+          return
         }
+
+        if (!data.permissions || data.permissions.length <= 0) {
+          reject('权限必须是数组！！')
+          return
+        }
+        commit('SET_PERMISSIONS', data.permissions)
         commit('SET_USER_INFO', data)
         resolve(data)
       }).catch(error => {
@@ -71,8 +83,36 @@ const actions = {
       removeToken()
       resolve()
     })
+  },
+
+  // dynamically modify permissions
+  changeRoles({ commit, dispatch }, role) {
+    return new Promise(async resolve => {
+      const token = role + '-token'
+
+      commit('SET_TOKEN', token)
+      setToken(token)
+
+      const { roles } = await dispatch('getInfo')
+
+      resetRouter()
+
+      // generate accessible routes map based on roles
+      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+
+      // dynamically add accessible routes
+      router.addRoutes(accessRoutes)
+
+      // reset visited views and cached views
+      dispatch('tagsView/delAllViews', null, { root: true })
+
+      resolve()
+    })
   }
+
 }
+
+
 
 export default {
   namespaced: true,
