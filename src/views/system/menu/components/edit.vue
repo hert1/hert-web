@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-dialog title="收货地址" :visible.sync="editFormVisible" :before-close='close'>
       <el-form :model="nodeData">
-        <el-form-item label="主键" :label-width="formLabelWidth">
+        <el-form-item label="主键" :label-width="formLabelWidth" style="display: none">
           <el-input v-model="nodeData.id" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="上级主键" :label-width="formLabelWidth">
+        <el-form-item label="上级主键" :label-width="formLabelWidth" style="display: none">
           <el-input v-model="nodeData.parentId" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级" :label-width="formLabelWidth">
@@ -34,19 +34,22 @@
 export default {
   data() {
     return {
-      formLabelWidth: '120px',
+      formLabelWidth: '120px'
     }
   },
   props: {
     nodeData: {},
     editFormVisible: Boolean
   },
-  mounted() {
-  },
-  created() {
-  },
+
   watch: {
 
+  },
+
+  mounted() {
+  },
+
+  created() {
   },
 
   methods: {
@@ -61,21 +64,5 @@ export default {
 </script>
 
 <style>
-  .text {
-    font-size: 14px;
-  }
-
-  .item {
-    margin-bottom: 18px;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
 
 </style>

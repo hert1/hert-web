@@ -40,14 +40,20 @@ export const constantRoutes = [
       {
         path: 'user',
         name: 'User',
-        component: () => import('@/views/user/index'),
+        component: () => import('@/views/system/user/index'),
         meta: { title: 'User', icon: 'table' }
       },
       {
         path: 'role',
         name: 'Role',
-        component: () => import('@/views/role/index'),
+        component: () => import('@/views/system/role/index'),
         meta: { title: 'Role', icon: 'tree' }
+      },
+      {
+        path: 'menu',
+        name: 'Menu',
+        component: () => import('@/views/system/menu/index'),
+        meta: { title: 'Menu', icon: 'table' }
       }
     ]
   },
