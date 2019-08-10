@@ -27,25 +27,18 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     } else {
       const hasGetUserInfo = store.getters.userInfo
-      if (hasGetUserInfo) {
+      const accessRoutes = store.getters.permission_routes
+      if (hasGetUserInfo && accessRoutes) {
+        router.addRoutes(accessRoutes)
+        accessRoutes.map(item => { router.options.routes.push(item); })
         next()
       } else {
         try {
-          // get user info
           const data = await store.dispatch('user/getInfo')
-          // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', data.permissions)
-          // dynamically add accessible routes
           router.addRoutes(accessRoutes)
-
-          //添加路由
-          accessRoutes.forEach((item,index) => {
-            router.options.routes[index+1] = item;
-          })
-
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          accessRoutes.map(item => { router.options.routes.push(item); })
+          next()
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')

@@ -30,34 +30,6 @@ export const constantRoutes = [
     }]
   },
 
-  /*{
-    path: '/system',
-    component: Layout,
-    redirect: '/system/user',
-    name: 'System',
-    meta: { title: 'System', icon: 'bug' },
-    children: [
-      {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/system/user/index'),
-        meta: { title: 'User', icon: 'table' }
-      },
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/system/role/index'),
-        meta: { title: 'Role', icon: 'tree' }
-      },
-      {
-        path: 'menu',
-        name: 'Menu',
-        component: () => import('@/views/system/menu/index'),
-        meta: { title: 'Menu', icon: 'table' }
-      }
-    ]
-  },*/
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 
