@@ -108,3 +108,32 @@ export function param2Obj(url) {
       '"}'
   )
 }
+
+/**
+ * 返回data里面全部属于row的children,并且转换为list
+ * @param {Ayrray} data
+ * * @param {Object} row
+ * @returns {Array}
+ */
+export function getRowChildren(data, row) {
+
+}
+
+/**
+ * 将树形数据转化为数组
+ * @param {Ayrray} data
+ * * @param {Object} row
+ * @returns {Array}
+ */
+export function treeToArray(list, dataSource) {
+  if (!(Array.isArray(dataSource) && dataSource.length > 0)) return ;
+  dataSource.forEach((father) => {
+    // debugger;
+    list.push(father);
+    if (typeof (father.children) == "undefined") {
+    } else {
+      treeToArray(list, father.children);
+    }
+  });
+  return list
+}
