@@ -5,8 +5,10 @@
       @click="handleAdd(0, {'id': 0, name: '顶级'})">添加</el-button>
       <el-table
       :data="data"
+      ref="multipleTable"
       v-loading="listLoading"
       style="width: 100%;margin-bottom: 20px;"
+      tooltip-effect="dark"
       row-key="id"
       default-expand-all
       :row-class-name="tableRowClassName"
@@ -25,14 +27,17 @@
         label="别名">
       </el-table-column>
       <el-table-column
+        :show-overflow-tooltip='true'
         prop="code"
         label="编号">
       </el-table-column>
       <el-table-column
+        :show-overflow-tooltip='true'
         prop="path"
         label="路径">
       </el-table-column>
         <el-table-column
+          :show-overflow-tooltip='true'
           prop="source"
           label="资源">
         </el-table-column>
@@ -61,7 +66,7 @@
 
 <script>
 import { fetchTree, remove, submit } from '@/api/menu'
-import { treeToArray } from '@/utils/index'
+import { generateList, } from '@/utils/index'
 import EditForm from './components/edit'
 
 export default {
@@ -70,11 +75,11 @@ export default {
   },
   data() {
     return {
-      data: Object,
+      data: [],
       confirmVisible: false,
       listLoading: true,
-      editData: Object,
-      editMenuData: Object,
+      editData: {},
+      editMenuData: {},
       editFormVisible: false,
     }
   },
@@ -91,9 +96,6 @@ export default {
         this.fetchTree()
       })
     },
-    handleSelectionChange(val) {
-      return selectRow = treeToArray([], val);
-    },
     handleAdd(index, row) {
       this.editFormVisible = true;
       this.editMenuData = {'parentId': row.id, parentName: row.name};
@@ -103,7 +105,7 @@ export default {
       this.editMenuData = row;
     },
     handleDelete(index, row) {
-      const selectRow = treeToArray([], row.children);
+      const selectRow = generateList(row.children);
       let ids = [row.id];
       selectRow && selectRow.map(item => ids.push(item.id))
       this.$confirm('此操作将删除该菜单下的所有菜单, 是否继续?', '提示', {

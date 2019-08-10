@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-dialog title="编辑菜单" :visible.sync="editFormVisible" :before-close='close'>
       <el-form :model="menuData"  :label-width="formLabelWidth">
-        <el-form-item label="主键"  style="display: none" >
+        <el-form-item label="主键"   >
           <el-input v-model="menuData.id" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="父级主键" style="display: none" >
+        <el-form-item label="父级主键"  >
           <el-input v-model="menuData.parentId" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: "  >
@@ -29,6 +29,15 @@
         <el-form-item label="资源: " >
           <el-input v-model="menuData.source" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="资源: " >
+            <el-cascader
+              expand-trigger="hover"
+              filterable
+              change-on-select
+              @click="click"
+              :options="options"
+              :props="{ label: 'name', value: 'id' }"></el-cascader>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -43,13 +52,13 @@
 export default {
   data() {
     return {
-      formLabelWidth: '15%'
+      formLabelWidth: '15%',
     }
   },
   props: {
-    options: Object,
-    menuData: Object,
-    editFormVisible: Boolean
+    menuData: {},
+    editFormVisible: Boolean,
+    options: []
   },
 
   watch: {
@@ -63,6 +72,9 @@ export default {
   },
 
   methods: {
+    click(e) {
+      console.log(e)
+    },
     submit() {
       this.$emit('handleSubmit', this.menuData)
     },

@@ -109,31 +109,81 @@ export function param2Obj(url) {
   )
 }
 
-/**
- * 返回data里面全部属于row的children,并且转换为list
- * @param {Ayrray} data
- * * @param {Object} row
- * @returns {Array}
- */
-export function getRowChildren(data, row) {
-
-}
-
-/**
- * 将树形数据转化为数组
- * @param {Ayrray} data
- * * @param {Object} row
- * @returns {Array}
- */
-export function treeToArray(list, dataSource) {
-  if (!(Array.isArray(dataSource) && dataSource.length > 0)) return ;
-  dataSource.forEach((father) => {
-    // debugger;
-    list.push(father);
-    if (typeof (father.children) == "undefined") {
-    } else {
-      treeToArray(list, father.children);
-    }
+// 根据form字段获取初始值
+export const getFormValues = (form, source) => {
+  const formValues = {};
+  Object.keys(form.getFieldsValue()).forEach(key => {
+    formValues[key] = source[key] !== undefined ? source[key] : null;
   });
-  return list
+  return deepClone(formValues);
 }
+
+/**
+ * 判断是否是函数
+ * @param obj
+ * @returns {boolean}
+ */
+export const isFunction = (obj) => {
+  return typeof obj === 'function';
+}
+
+// 根据某个字段的值从list中获取对象
+export const getActiveItemByFiledName = (list, filedName, value) => {
+  return list.filter(item => item[filedName] == value );
+}
+
+/*tree 转list 辅助工具*/
+export const generateList = (data) => {
+  let dataList = [];
+  for (let i = 0; i < data.length; i++) {
+    const node = data[i];
+    const id = node.id;
+    if(id != 0) {
+      dataList.push({ id, name: node.name });
+    }
+
+    if (node.children) {
+      dataList = [...dataList, ...generateList(node.children)]
+    }
+  }
+  return dataList;
+};
+
+/**
+ * 获取树结构里面第一个没有children的节点
+ * @param treeData
+ * @returns {string}
+ */
+export const getFirstNode = treeData => {
+  if(treeData === undefined || !treeData) return null;
+  if(treeData.children && treeData.children.length) {
+    return getFirstNode(treeData.children[0])
+  }
+  return treeData
+};
+
+/**
+ * 合并单元格，设置某一行的列数
+ * @param colName, data
+ * @returns Map<index, num>
+ */
+export const setTableRowNum = (colName, data) => {
+  let new_clientRowNum = new Map();
+  if(!data) return new_clientRowNum;
+  let flag = true;
+  let now_colName = '';
+  for(let i = 0; i < data.length; i++) {
+    if (now_colName !== data[i][colName]) {
+      flag = true;
+      now_colName = data[i][colName]
+    }
+    const num = data.filter(item => item[colName] === now_colName).length
+    if (flag && num) {
+      new_clientRowNum.set(i, num);
+      flag = false
+    } else {
+      new_clientRowNum.set(i, 0)
+    }
+  }
+  return new_clientRowNum
+};
