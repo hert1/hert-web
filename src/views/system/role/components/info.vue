@@ -2,10 +2,10 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>role-info</span>
-        <el-button style="float: right; padding: 3px 3px" type="text" @click="reback">reback</el-button>
-        <el-button style="float: right; padding: 3px 3px" type="text" @click="openEditModal">edit</el-button>
-        <el-button style="float: right; padding: 3px 3px" type="text" @click="openAddModal">add</el-button>
+        <span style="color: #909399"><span style="color: #409EFF; font-size: 20px">{{nodeData.roleName}}</span>的详情信息</span>
+        <el-button style="float: right; padding: 3px 3px; margin-left: 10px" type="primary" icon="el-icon-back" circle @click="reback"></el-button>
+        <el-button style="float: right; padding: 3px 3px" type="primary" icon="el-icon-edit" circle @click="openEditModal"></el-button>
+        <el-button style="float: right; padding: 3px 3px" type="primary" icon="el-icon-plus" circle @click="openAddModal"></el-button>
       </div>
       <span>{{nodeData}}</span>
     </el-card>

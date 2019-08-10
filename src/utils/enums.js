@@ -1,23 +1,17 @@
-import React from 'react';
-import {Badge} from 'antd';
-
 const enums = {
-  EDIT_TYPE: {
-    CREATE: {value: 1, desc: '新建'},
-    UPDATE: {value: 2, desc: '修改'},
-    CONFIRM: {value: 3, desc: '确认'},
-    AUDIT: {value: 4, desc: '审核'},
+  MENU_TYPE: {
+    MENU: {value: 1, label: '新建'},
+    BUTTON: {value: 2, label: '修改'},
   },
 };
 
 //
-export const isCreate = (value) => value&& value=== enums.EDIT_TYPE.CREATE.value
 
 // 格式化公用函数
 export const enumsFormatter = (enums, notMatch = '-') => info=> {
     for (const key in enums) {
       if (enums[key].value== info) {
-        return enums[key].desc;
+        return enums[key].label;
       }
     }
     return notMatch;
@@ -33,6 +27,7 @@ export const toArray = enums => {
 };
 
 // 状态格式化
-export const adminTypeFormatter = enumsFormatter(enums.EDIT_TYPE);
+ const enumsArray = {
+   menuType: toArray(enums.MENU_TYPE)
+ }
 
-export default enums;

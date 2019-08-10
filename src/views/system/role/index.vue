@@ -2,8 +2,8 @@
   <div class="app-container">
     <el-card v-if="!nodeInfoVisible" class="box-card" v-loading="treeDataLoading">
       <div slot="header" class="clearfix">
-        <span>role-organization</span>
-        <el-button style="float: right; padding: 3px 3px" type="text" @click="remove">remove</el-button>
+        <span><el-button type="success">角色树</el-button></span>
+        <el-button size="large" style="float: right; padding: 3px 3px" type="danger" icon="el-icon-delete" circle @click="remove"></el-button>
       </div>
       <el-tree
         ref="tree"
@@ -19,9 +19,8 @@
         <span style="float: right">
           <el-button
             type="text"
-            size="mini"
             @click="() => handleClickView(data)">
-            查看
+            详情
           </el-button>
         </span>
       </span>
@@ -54,9 +53,6 @@ export default {
     this.fetchTreeData()
   },
   watch: {
-    filterText(val) {
-      this.$refs.tree2.filter(val)
-    }
   },
 
   methods: {
@@ -69,6 +65,7 @@ export default {
     },
     remove() {
       const ids = this.$refs.tree.getCheckedKeys();
+      if (!ids.length) return
       remove(ids.toString()).then(response => {
         this.fetchTreeData()
       })

@@ -1,5 +1,5 @@
 import { asyncRoutes, constantRoutes } from '@/router'
-import { fetchTree } from '@/api/menu'
+import { router } from '@/api/menu'
 import Layout from '@/layout'
 
 /**
@@ -21,7 +21,6 @@ function hasPermission(permissions, route) {
  */
 export function generaMenu(routes, data) {
   data.forEach(item => {
-    const component = '@/views'+item.source+'/index';
     const menu = {
       path: item.path,
       component: !item.source ? Layout : () => import( `@/views${item.source}/index`),
@@ -72,7 +71,7 @@ const actions = {
     return new Promise(resolve => {
       const loadMenuData = []
       // 先查询后台并返回左侧菜单数据并把数据添加到路由
-      fetchTree().then(response => {
+      router().then(response => {
         let data = response
         if (response.code !== 200) {
           this.$message({

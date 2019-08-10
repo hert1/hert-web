@@ -1,14 +1,23 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <router-view :key="key" />
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span><breadcrumb class="breadcrumb-container" /></span>
+        </div>
+          <router-view :key="key" />
+      </el-card>
     </transition>
   </section>
 </template>
 
 <script>
+import Breadcrumb from '@/components/Breadcrumb'
 export default {
   name: 'AppMain',
+  components: {
+    Breadcrumb,
+  },
   computed: {
     key() {
       return this.$route.path

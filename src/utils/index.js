@@ -135,7 +135,8 @@ export const getActiveItemByFiledName = (list, filedName, value) => {
 /*tree 转list 辅助工具*/
 export const generateList = (data) => {
   let dataList = [];
-  for (let i = 0; i < data.length; i++) {
+  if (!data || !data.length) return dataList
+    for (let i = 0; i < data.length; i++) {
     const node = data[i];
     const id = node.id;
     if(id != 0) {
