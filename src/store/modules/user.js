@@ -48,7 +48,7 @@ const actions = {
           return
         }
 
-        if (!data.permissions || data.permissions.length <= 0) {
+        if (!data.permissions || data.permissions.length < 0) {
           reject('权限必须是数组！！')
           return
         }

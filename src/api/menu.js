@@ -24,11 +24,10 @@ export function remove(data) {
   })
 }
 
-export function router(data) {
+export function router() {
   return request({
     url: '/hert-base/menu/router',
-    method: 'post',
-    data: qs.stringify({ids: data})
+    method: 'get',
   })
 }
 

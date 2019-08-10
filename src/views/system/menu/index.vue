@@ -1,12 +1,13 @@
 <template>
   <div class="app-container">
-    <el-button
-      size="mini"
+    <el-button type="primary" round icon="el-icon-plus"
       @click="handleAdd(0, {'id': 0, name: '顶级'})">添加</el-button>
       <el-table
       :data="data"
+      ref="multipleTable"
       v-loading="listLoading"
       style="width: 100%;margin-bottom: 20px;"
+      tooltip-effect="dark"
       row-key="id"
       default-expand-all
       :row-class-name="tableRowClassName"
@@ -21,26 +22,29 @@
         label="名称">
       </el-table-column>
       <el-table-column
-        prop="alias"
-        label="别名">
+        prop="category"
+        label="类型">
+        <template slot-scope="scope">
+          <span v-html="scope.row.category === 1 ? 'menu' : 'button'"></span>
+        </template>
       </el-table-column>
       <el-table-column
+        :show-overflow-tooltip='true'
         prop="code"
         label="编号">
       </el-table-column>
       <el-table-column
+        :show-overflow-tooltip='true'
         prop="path"
         label="路径">
       </el-table-column>
         <el-table-column
+          :show-overflow-tooltip='true'
           prop="source"
           label="资源">
         </el-table-column>
-      <el-table-column label="操作"  width="250">
+      <el-table-column label="操作"  width="150">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleAdd(scope.$index, scope.row)">添加</el-button>
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -54,14 +58,14 @@
     <EditForm @handleSubmit="handleSubmit"
               @closeEditForm="closeEditForm"
               :editFormVisible="editFormVisible"
-              :options="data"
+              :options="options"
               :menuData="editMenuData"/>
   </div>
 </template>
 
 <script>
 import { fetchTree, remove, submit } from '@/api/menu'
-import { treeToArray } from '@/utils/index'
+import { generateList, } from '@/utils/index'
 import EditForm from './components/edit'
 
 export default {
@@ -70,11 +74,12 @@ export default {
   },
   data() {
     return {
-      data: Object,
+      options: [],
+      data: [],
       confirmVisible: false,
       listLoading: true,
-      editData: Object,
-      editMenuData: Object,
+      editData: {},
+      editMenuData: {},
       editFormVisible: false,
     }
   },
@@ -91,9 +96,6 @@ export default {
         this.fetchTree()
       })
     },
-    handleSelectionChange(val) {
-      return selectRow = treeToArray([], val);
-    },
     handleAdd(index, row) {
       this.editFormVisible = true;
       this.editMenuData = {'parentId': row.id, parentName: row.name};
@@ -103,7 +105,7 @@ export default {
       this.editMenuData = row;
     },
     handleDelete(index, row) {
-      const selectRow = treeToArray([], row.children);
+      const selectRow = generateList(row.children);
       let ids = [row.id];
       selectRow && selectRow.map(item => ids.push(item.id))
       this.$confirm('此操作将删除该菜单下的所有菜单, 是否继续?', '提示', {
@@ -127,17 +129,19 @@ export default {
       });
     },
     tableRowClassName({row, rowIndex}) {
-      if (row.isDeleted === 1) {
-        return 'warning-row';
-      } else if (rowIndex === 3) {
-        return 'success-row';
+      if (row.category === 1) {
+        return 'menu';
+      } else if (row.category === 2) {
+        return 'button';
       }
       return '';
   },
     fetchTree() {
       this.listLoading = true
+      this.options = [{name: '顶级', id: 0 }],
       fetchTree().then(response => {
         this.data = response.data
+        response.data.map(item => this.options.push(item))
         this.listLoading = false
       })
     }
@@ -146,11 +150,11 @@ export default {
 </script>
 
 <style>
-  .el-table .warning-row {
-    background: red;
+  .el-table .menu {
+    background: #F2F6FC;
   }
 
-  .el-table .success-row {
-    background: #f0f9eb;
+  .el-table .button {
+    background: #EBEEF5;
   }
 </style>
