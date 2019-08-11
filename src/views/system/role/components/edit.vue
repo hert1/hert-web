@@ -17,6 +17,9 @@
         <el-form-item label="角色别名" :label-width="formLabelWidth" prop="roleAlias">
           <el-input v-model="nodeData.roleAlias" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="权限" :label-width="formLabelWidth">
+          <treeselect v-model="nodeData.permissions" :multiple="true" :normalizer="normalizer"  :options="options" />
+        </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth">
           <el-input v-model="nodeData.sort" auto-complete="off"></el-input>
         </el-form-item>
@@ -30,11 +33,17 @@
 </template>
 
 <script>
-
+ import Treeselect from '@riophae/vue-treeselect'
+ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+ import { fetchTree} from '@/api/menu'
 export default {
+  components: {
+    Treeselect,
+  },
   data() {
     return {
       formLabelWidth: '15%',
+      options: [],
       rules: {
         roleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
@@ -42,7 +51,14 @@ export default {
         roleAlias: [
           { required: true, message: '请输入角色别名', trigger: 'blur' },
         ],
-      }
+      },
+      normalizer(node) {
+        return {
+          id: node.id,
+          label: node.name,
+          children: node.children,
+        }
+      },
     }
   },
   props: {
@@ -58,9 +74,16 @@ export default {
   },
 
   created() {
+    this.fetchTree()
   },
 
   methods: {
+    fetchTree() {
+        fetchTree().then(response => {
+          this.data = response.data
+          response.data.map(item => this.options.push(item))
+        })
+    },
     submit() {
       this.$refs.refForm.validate((valid) => {
         if (valid) {
@@ -71,6 +94,7 @@ export default {
       });
     },
     close() {
+      this.$refs.refForm.resetFields();
       this.$emit('closeEditForm')
     }
   }

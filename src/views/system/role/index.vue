@@ -67,6 +67,10 @@ export default {
       const ids = this.$refs.tree.getCheckedKeys();
       if (!ids.length) return
       remove(ids.toString()).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.message || '操作成功'
+        });
         this.fetchTreeData()
       })
     },

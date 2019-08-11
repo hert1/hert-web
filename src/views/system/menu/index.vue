@@ -9,7 +9,6 @@
       style="width: 100%;margin-bottom: 20px;"
       tooltip-effect="dark"
       row-key="id"
-      default-expand-all
       :row-class-name="tableRowClassName"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
       <el-table-column
@@ -92,6 +91,10 @@ export default {
     },
     handleSubmit(value) {
       submit(value).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.message || '操作成功'
+        });
         this.editFormVisible = false;
         this.fetchTree()
       })
@@ -117,7 +120,7 @@ export default {
         remove(ids.toString()).then(response => {
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: response.message || '操作成功'
           });
           this.fetchTree()
         })

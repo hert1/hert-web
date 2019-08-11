@@ -6,12 +6,7 @@
           <el-input v-model="menuData.id" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: " >
-          <el-cascader
-            placeholder="顶级" style="width: 100%"
-            v-model="menuData.parentId"
-            :options="options"
-            :props="{ expandTrigger: 'hover', label: 'name', value: 'id', checkStrictly: true, emitPath: false }">
-          </el-cascader>
+          <treeselect v-model="menuData.parentId" :normalizer="normalizer"  :options="now_options" />
         </el-form-item>
         <el-form-item label="名称: " prop="name">
           <el-input v-model="menuData.name" auto-complete="off"></el-input>
@@ -41,10 +36,16 @@
 </template>
 
 <script>
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
+  components: {
+    Treeselect,
+  },
   data() {
     return {
       formLabelWidth: '15%',
+      now_options: [{name: '顶级', id: 0 }],
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
@@ -52,7 +53,14 @@ export default {
         category: [
           { required: true, message: '请选择类型', trigger: 'blur' },
         ],
-      }
+      },
+      normalizer(node) {
+        return {
+          id: node.id,
+          label: node.name,
+          children: node.children,
+        }
+      },
     };
   },
   props: {
@@ -62,13 +70,14 @@ export default {
   },
 
   watch: {
-
   },
 
   mounted() {
+
   },
 
   created() {
+    this.now_options = this.options
   },
 
   methods: {
@@ -82,6 +91,7 @@ export default {
       });
     },
     close() {
+      this.$refs.refForm.resetFields();
       this.$emit('closeEditForm')
     }
   }

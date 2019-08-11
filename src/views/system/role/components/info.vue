@@ -44,6 +44,10 @@ export default {
   methods: {
     handleSubmit(value) {
       submit(value).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.message || '操作成功'
+        });
         this.editFormVisible = false;
         this.reback();
       })
