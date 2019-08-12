@@ -9,10 +9,18 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+export function checkLogin(token) {
   return request({
     url: '/hert-auth/checkLogin',
     method: 'post'
+  })
+}
+
+export function detail(data) {
+  return request({
+    url: '/hert-base/user/detail',
+    method: 'get',
+    params: data
   })
 }
 

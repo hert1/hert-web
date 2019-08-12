@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, checkLogin } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -38,9 +38,9 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  checkLogin({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      checkLogin(state.token).then(response => {
         const { data } = response
 
         if (!data) {

@@ -32,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          const data = await store.dispatch('user/getInfo')
+          const data = await store.dispatch('user/checkLogin')
           const accessRoutes = await store.dispatch('permission/generateRoutes', data.permissions)
           router.addRoutes(accessRoutes)
           router.options.routes.push(...accessRoutes)
