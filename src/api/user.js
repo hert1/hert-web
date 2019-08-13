@@ -31,10 +31,11 @@ export function logout() {
   })
 }
 
-export function fetchList() {
+export function fetchList(data) {
   return request({
     url: '/hert-base/user/list',
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 
