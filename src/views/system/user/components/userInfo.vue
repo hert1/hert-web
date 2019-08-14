@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span><h3>详情信息</h3></span>
-        <el-button style="float: right; padding: 3px 0; margin-top: -40px" type="primary">修改</el-button>
+        <el-button @click="handleEdit" style="float: right; padding: 3px 0; margin-top: -40px" type="primary">修改</el-button>
       </div>
     <el-card class="box-card" v-loading="loading">
           <div slot="header" class="clearfix">
@@ -33,6 +33,7 @@
     <el-card class="box-card" style="margin-top: 20px">
       <div slot="header" class="clearfix">
         <span><h4>直系下属</h4></span>
+        <el-button style="float: right; padding: 3px 0; margin-top: -40px" @click="handleAdd" type="primary">添加</el-button>
       </div>
       <el-table
         :data="userList"
@@ -68,18 +69,27 @@
       </el-table>
     </el-card>
     </el-card>
+    <EditForm
+      @handleSubmit="handleSubmit"
+      @closeEditForm="closeEditForm"
+      :editFormVisible="editFormVisible"
+      :data="editUserInfo"
+    />
   </div>
 </template>
 
 <script>
-import { fetchList, detail } from '@/api/user'
-import store from '@/store'
+import { fetchList, detail, submit } from '@/api/user'
+import EditForm from './edit'
 
 export default {
   filters: {
     avatarFilter:function (dateStr) {
       return dateStr ? dateStr : 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
     },
+  },
+  components: {
+    EditForm
   },
   computed: {
   },
@@ -90,14 +100,46 @@ export default {
       userList: null,
       loading: true,
       activeName: 1,
+      editFormVisible: false,
+      editUserInfo: {},
     }
   },
   created() {
-    this.id = this.$route.query.id
     this.fetchUserList();
     this.fetchUserInfo();
   },
+  watch: {
+    $route(to,from){
+      this.id = this.$route.query.id
+      this.fetchUserList();
+      this.fetchUserInfo();
+    }
+  },
   methods: {
+    handleSubmit(value) {
+      submit(value).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.message || '操作成功'
+        });
+        this.editUserInfo = {};
+        this.editFormVisible = false;
+        this.fetchUserInfo();
+        this.fetchUserList();
+      })
+    },
+    handleAdd() {
+      this.editFormVisible = true;
+      this.editUserInfo = {parentId: this.userInfo.id, parentName: this.userInfo.name};
+    },
+    closeEditForm() {
+      this.editFormVisible = false;
+      this.editUserInfo = {};
+    },
+    handleEdit() {
+      this.editFormVisible = true;
+      this.editUserInfo = this.userInfo;
+    },
     fetchUserList() {
       fetchList({id: this.id}).then(response => {
         this.userList = response.data.records
@@ -114,14 +156,6 @@ export default {
 </script>
 
 <style>
-  .text {
-    font-size: 14px;
-  }
-
-  .item {
-    margin-bottom: 18px;
-  }
-
   .clearfix:before,
   .clearfix:after {
     display: table;

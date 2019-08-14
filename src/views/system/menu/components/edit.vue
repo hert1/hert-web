@@ -26,6 +26,15 @@
         <el-form-item label="资源: " >
           <el-input v-model="menuData.source" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="icon: " >
+          <el-input v-model="menuData.icon" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="是否缓存: " >
+          <el-select v-model="menuData.isCache"  :key="menuData.isCache" placeholder="请选择" style="width: 100%">
+            <el-option label="是" value= 1 > </el-option>
+            <el-option label="否" value= 2> </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>

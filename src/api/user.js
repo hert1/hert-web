@@ -39,3 +39,12 @@ export function fetchList(data) {
   })
 }
 
+export function submit(data) {
+  return request({
+    url: '/hert-base/user/submit',
+    method: 'post',
+    headers: {"Content-Type": 'application/json'},
+    data: data
+  })
+}
+

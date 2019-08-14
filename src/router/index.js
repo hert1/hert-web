@@ -31,7 +31,7 @@ export const constantRoutes = [
       {
         path: '/userInfo',
         hidden: true,
-        component: () => import('@/components/UserInfo/index'),
+        component: () => import('@/views/system/user/components/userInfo'),
       },]
   },
 

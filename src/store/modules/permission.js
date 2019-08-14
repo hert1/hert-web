@@ -26,7 +26,7 @@ export function generaMenu(routes, data) {
       component: !item.source ? Layout : () => import( `@/views${item.source}/index`),
       children: [],
       name: item.name,
-      meta: { title: item.name,}
+      meta: { title: item.name, icon: item.icon}
     }
     if (item.children) {
       generaMenu(menu.children, item.children)

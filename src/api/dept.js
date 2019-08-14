@@ -12,7 +12,8 @@ export function submit(data) {
   return request({
     url: '/hert-base/dept/submit',
     method: 'post',
-    data: qs.stringify(data)
+    headers: {"Content-Type": 'application/json'},
+    data: data
   })
 }
 

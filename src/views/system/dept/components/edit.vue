@@ -6,7 +6,7 @@
           <el-input v-model="data.id" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: " >
-          <treeselect v-model="data.parentId" :normalizer="normalizer"  :options="now_options" />
+          <treeselect v-model="data.parentId" :normalizer="normalizer"  :options="options" />
         </el-form-item>
         <el-form-item label="简称: " prop="deptName">
           <el-input v-model="data.deptName" auto-complete="off"></el-input>
@@ -36,7 +36,6 @@ export default {
   data() {
     return {
       formLabelWidth: '15%',
-      now_options: [{name: '顶级', id: 0 }],
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' },
@@ -68,7 +67,6 @@ export default {
   },
 
   created() {
-    this.now_options = this.options
   },
 
   methods: {
