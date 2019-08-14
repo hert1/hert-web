@@ -20,7 +20,7 @@ export function submit(data) {
 export function remove(data) {
   return request({
     url: '/hert-base/role/remove',
-    method: 'post',
+    method: 'get',
     data: qs.stringify({ids: data})
   })
 }

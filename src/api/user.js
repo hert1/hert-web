@@ -5,14 +5,16 @@ export function login(data) {
   return request({
     url: '/hert-auth/login',
     method: 'post',
-    data: qs.stringify(data)
+    data: data
   })
 }
 
-export function checkLogin(token) {
+export function checkLogin() {
   return request({
     url: '/hert-auth/checkLogin',
-    method: 'post'
+    method: 'post',
+    data: {"grantType": "refresh_token"}
+
   })
 }
 
@@ -43,7 +45,6 @@ export function submit(data) {
   return request({
     url: '/hert-base/user/submit',
     method: 'post',
-    headers: {"Content-Type": 'application/json'},
     data: data
   })
 }
