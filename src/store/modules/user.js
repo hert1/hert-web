@@ -54,6 +54,8 @@ const actions = {
         }
         commit('SET_PERMISSIONS', data.permissions)
         commit('SET_USER_INFO', data)
+		commit('SET_TOKEN', data.accessToken)
+        setToken(data.accessToken)
         resolve(data)
       }).catch(error => {
         reject(error)
