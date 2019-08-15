@@ -32,7 +32,7 @@ const actions = {
         setToken(data)
         resolve()
       }).catch(error => {
-        reject(error)
+        reject(error || "服务器超时")
       })
     })
   },
@@ -44,7 +44,7 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          reject('Verification failed, please Login again.')
+          reject('验证过期，请重新登录！！！')
           return
         }
 
@@ -54,7 +54,7 @@ const actions = {
         }
         commit('SET_PERMISSIONS', data.permissions)
         commit('SET_USER_INFO', data)
-		commit('SET_TOKEN', data.accessToken)
+		    commit('SET_TOKEN', data.accessToken)
         setToken(data.accessToken)
         resolve(data)
       }).catch(error => {
@@ -86,31 +86,6 @@ const actions = {
       resolve()
     })
   },
-
-  // dynamically modify permissions
-  changeRoles({ commit, dispatch }, role) {
-    return new Promise(async resolve => {
-      const token = role + '-token'
-
-      commit('SET_TOKEN', token)
-      setToken(token)
-
-      const { roles } = await dispatch('getInfo')
-
-      resetRouter()
-
-      // generate accessible routes map based on roles
-      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
-
-      // dynamically add accessible routes
-      router.addRoutes(accessRoutes)
-
-      // reset visited views and cached views
-      dispatch('tagsView/delAllViews', null, { root: true })
-
-      resolve()
-    })
-  }
 
 }
 

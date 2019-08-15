@@ -49,3 +49,18 @@ export function submit(data) {
   })
 }
 
+export function remove(data) {
+  return request({
+    url: '/hert-base/user/remove',
+    method: 'delete',
+    data:  {ids: data}
+  })
+}
+
+export function resetPassword(data) {
+  return request({
+    url: '/hert-base/user/reset-password',
+    method: 'post',
+    data:  {ids: data}
+  })
+}

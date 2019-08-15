@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-button type="primary" round icon="el-icon-plus"
-      @click="handleAdd(0, {'id': 0, deptName: '顶级'})">添加</el-button>
+      @click="handleAdd(0, {'id': 0, deptName: '顶级'})" style="margin-bottom: 20px">添加</el-button>
       <el-table
       :data="data"
       ref="multipleTable"
@@ -75,7 +75,7 @@ export default {
         this.$message({
           type: 'success',
           message: response.message || '操作成功'
-        });
+        })
         this.editFormVisible = false;
         this.fetchTree()
       })
@@ -98,13 +98,13 @@ export default {
         type: 'warning'
       }).then(() => {
         this.listLoading = true
-        remove(ids.toString()).then(response => {
+        remove(ids).then(response => {
           this.$message({
             type: 'success',
             message: response.message || '操作成功'
           });
           this.fetchTree()
-        })
+        }).catch(() => {this.listLoading = false})
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -127,7 +127,7 @@ export default {
         this.data = response.data
         response.data.map(item => this.options.push(item))
         this.listLoading = false
-      })
+      }).catch(() => {this.listLoading = false})
     }
   }
 }

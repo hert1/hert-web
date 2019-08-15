@@ -12,7 +12,6 @@ export function submit(data) {
   return request({
     url: '/hert-base/menu/submit',
     method: 'post',
-    headers: {"Content-Type": 'application/json'},
     data: data
   })
 }
@@ -20,8 +19,8 @@ export function submit(data) {
 export function remove(data) {
   return request({
     url: '/hert-base/menu/remove',
-    method: 'get',
-    data: qs.stringify({ids: data})
+    method: 'delete',
+    data:  {ids: data}
   })
 }
 

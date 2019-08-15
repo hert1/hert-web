@@ -1,8 +1,11 @@
 <template>
   <div class="app-container">
+    <router-link :to="{path:'/userInfo'}">
+      <el-button type="primary" round style="margin-bottom: 20px;">个人信息</el-button>
+    </router-link>
     <el-table
       v-loading="listLoading"
-      :data="list"
+      :data="page.records"
       fit
       highlight-current-row
     >
@@ -31,9 +34,10 @@
           <el-tag>{{ scope.row.sexName }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  width="150">
+      <el-table-column label="操作"  width="250">
         <template slot-scope="scope">
           <router-link :to="{path:'/userInfo', query:{id: scope.row.id}}"><el-button size="mini">详情</el-button></router-link>
+          <el-button @click="resetPassword(scope.$index, scope.row)" size="mini" type="danger">重置密码</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,7 +45,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/user'
+import { fetchList, resetPassword } from '@/api/user'
 
 export default {
   filters: {
@@ -56,20 +60,25 @@ export default {
   },
   data() {
     return {
-      list: null,
-      listLoading: true
+      page: null,
+      listLoading: true,
     }
   },
   created() {
     this.fetchData()
   },
   methods: {
+    resetPassword(index, row) {
+      resetPassword([row.id]).then(response => {
+        this.$message.success("密码重置成功！")
+      }).catch(() => {this.$message.error("密码重置失败！")})
+    },
     fetchData() {
       this.listLoading = true
       fetchList().then(response => {
-        this.list = response.data.records
+        this.page = response.data
         this.listLoading = false
-      })
+      }).catch(() => {this.listLoading = false})
     }
   }
 }

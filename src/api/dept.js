@@ -19,8 +19,8 @@ export function submit(data) {
 export function remove(data) {
   return request({
     url: '/hert-base/dept/remove',
-    method: 'get',
-    data: qs.stringify({ids: data})
+    method: 'delete',
+    data:  {ids: data}
   })
 }
 

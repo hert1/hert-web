@@ -56,7 +56,7 @@ export default {
   props: {
     data: {},
     editFormVisible: Boolean,
-    options: []
+    options: null,
   },
 
   watch: {

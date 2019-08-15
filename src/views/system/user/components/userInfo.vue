@@ -3,7 +3,8 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span><h3>详情信息</h3></span>
-        <el-button @click="handleEdit" style="float: right; padding: 3px 0; margin-top: -40px" type="primary">修改</el-button>
+        <el-button @click="back" style="float: right; padding: 3px 0; margin-top: -40px" type="primary">返回</el-button>
+        <el-button @click="handleEdit" style="float: right; padding: 3px 0; margin-top: -40px; margin-right: 40px" type="primary">修改</el-button>
       </div>
     <el-card class="box-card" v-loading="loading">
           <div slot="header" class="clearfix">
@@ -66,6 +67,11 @@
             <el-tag>{{ scope.row.sexName }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="操作"  width="150">
+          <template slot-scope="scope">
+            <el-button @click="resetPassword(scope.$index, scope.row)" size="mini" type="danger">重置密码</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
     </el-card>
@@ -79,7 +85,7 @@
 </template>
 
 <script>
-import { fetchList, detail, submit } from '@/api/user'
+import { fetchList, detail, submit, resetPassword } from '@/api/user'
 import EditForm from './edit'
 
 export default {
@@ -105,17 +111,26 @@ export default {
     }
   },
   created() {
-    this.fetchUserList();
-    this.fetchUserInfo();
+    const id = this.$route.query.id
+    this.fetchUserList(id);
+    this.fetchUserInfo(id);
   },
   watch: {
     $route(to,from){
-      this.id = this.$route.query.id
-      this.fetchUserList();
-      this.fetchUserInfo();
+      const id = this.$route.query.id
+      this.fetchUserList(id);
+      this.fetchUserInfo(id);
     }
   },
   methods: {
+    back() {
+      this.$router.go(-1);//返回上一层
+    },
+    resetPassword(index, row) {
+      resetPassword([row.id]).then(response => {
+        this.$message.success("密码重置成功！")
+      }).catch(() => {this.$message.error("密码重置失败！")})
+    },
     handleSubmit(value) {
       submit(value).then(response => {
         this.$message({
@@ -140,14 +155,14 @@ export default {
       this.editFormVisible = true;
       this.editUserInfo = this.userInfo;
     },
-    fetchUserList() {
-      fetchList({id: this.id}).then(response => {
+    fetchUserList(id) {
+      fetchList({id: id}).then(response => {
         this.userList = response.data.records
         this.loading = false
       })
     },
-    fetchUserInfo() {
-      detail({id: this.id}).then(response => {
+    fetchUserInfo(id) {
+      detail({id: id}).then(response => {
         this.userInfo = response.data
       })
     }
