@@ -69,6 +69,7 @@ export default {
   methods: {
     closeEditForm() {
       this.editFormVisible = false;
+      this.editData = {}
     },
     handleSubmit(value) {
       submit(value).then(response => {

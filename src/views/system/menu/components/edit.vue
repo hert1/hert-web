@@ -1,36 +1,36 @@
 <template>
   <div class="app-container">
     <el-dialog title="菜单" :visible.sync="editFormVisible" :before-close='close'>
-      <el-form :model="menuData"  :label-width="formLabelWidth" ref="refForm" :rules="rules" >
+      <el-form :model="cache_data"  :label-width="formLabelWidth" ref="refForm" :rules="rules" >
         <el-form-item label="主键" style="display: none"  >
-          <el-input v-model="menuData.id" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.id" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: " >
-          <treeselect v-model="menuData.parentId" :normalizer="normalizer"  :options="now_options" />
+          <treeselect v-model="cache_data.parentId" :normalizer="normalizer"  :options="now_options" />
         </el-form-item>
         <el-form-item label="名称: " prop="name">
-          <el-input v-model="menuData.name" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.name" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="类型: " prop="category" >
-          <el-select v-model="menuData.category" placeholder="请选择" style="width: 100%">
+          <el-select v-model="cache_data.category" placeholder="请选择" style="width: 100%">
             <el-option label="菜单" value= 1> </el-option>
             <el-option label="按钮" value= 2> </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="编号: " >
-          <el-input v-model="menuData.code" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.code" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="路径: " >
-          <el-input v-model="menuData.path" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.path" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="资源: " >
-          <el-input v-model="menuData.source" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.source" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="icon: " >
-          <el-input v-model="menuData.icon" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.icon" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="是否缓存: " >
-          <el-select v-model="menuData.isCache"  :key="menuData.isCache" placeholder="请选择" style="width: 100%">
+          <el-select v-model="cache_data.isCache"  :key="cache_data.isCache" placeholder="请选择" style="width: 100%">
             <el-option label="是" value= 1 > </el-option>
             <el-option label="否" value= 2> </el-option>
           </el-select>
@@ -70,15 +70,19 @@ export default {
           children: node.children,
         }
       },
+      cache_data: {},
     };
   },
   props: {
-    menuData: {},
+    data: {},
     editFormVisible: Boolean,
-    options: []
+    options: {type: Array}
   },
 
   watch: {
+    data(new_val, old_val) {
+      this.cache_data = JSON.parse(JSON.stringify(new_val))
+    }
   },
 
   mounted() {
@@ -93,7 +97,7 @@ export default {
     submit() {
       this.$refs.refForm.validate((valid) => {
         if (valid) {
-          this.$emit('handleSubmit', this.menuData)
+          this.$emit('handleSubmit', this.cache_data)
         } else {
           return false;
         }

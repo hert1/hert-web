@@ -62,7 +62,7 @@ export default {
 
   watch: {
     data(new_val, old_val) {
-      this.cache_data = new_val;
+      this.cache_data = JSON.parse(JSON.stringify(new_val))
     }
   },
 
@@ -77,7 +77,7 @@ export default {
     submit() {
       this.$refs.refForm.validate((valid) => {
         if (valid) {
-          this.$emit('handleSubmit', this.data)
+          this.$emit('handleSubmit', this.cache_data)
         } else {
           return false;
         }

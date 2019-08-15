@@ -58,7 +58,7 @@
               @closeEditForm="closeEditForm"
               :editFormVisible="editFormVisible"
               :options="options"
-              :menuData="editMenuData"/>
+              :data="editData"/>
   </div>
 </template>
 
@@ -78,7 +78,6 @@ export default {
       confirmVisible: false,
       listLoading: true,
       editData: {},
-      editMenuData: {},
       editFormVisible: false,
     }
   },
@@ -88,6 +87,7 @@ export default {
   methods: {
     closeEditForm() {
       this.editFormVisible = false;
+      this.editData = {}
     },
     handleSubmit(value) {
       submit(value).then(response => {
@@ -101,11 +101,11 @@ export default {
     },
     handleAdd(index, row) {
       this.editFormVisible = true;
-      this.editMenuData = {'parentId': row.id, parentName: row.name};
+      this.editData = {'parentId': row.id, parentName: row.name};
     },
     handleEdit(index, row) {
       this.editFormVisible = true;
-      this.editMenuData = row;
+      this.editData = row;
     },
     handleDelete(index, row) {
       const selectRow = generateList(row.children);

@@ -12,7 +12,7 @@
     <EditForm @handleSubmit="handleSubmit"
               @closeEditForm="closeEditForm"
               :editFormVisible="editFormVisible"
-              :nodeData="editNodeData"/>
+              :data="editData"/>
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       editFormVisible: false,
-      editNodeData: {},
+      editData: {},
     }
   },
   props: {
@@ -54,16 +54,16 @@ export default {
     },
     closeEditForm() {
       this.editFormVisible = false;
+      this.editData = {}
     },
     openEditModal() {
       this.editFormVisible = true;
-      this.editNodeData = this.nodeData
+      this.editData = this.nodeData
     },
     openAddModal() {
       this.editFormVisible = true
       const nodeData = this.nodeData
-      let editNodeData = {'parentId': nodeData.id, 'parentName': nodeData.roleName}
-      this.editNodeData = editNodeData
+      this.editData = {'parentId': nodeData.id, 'parentName': nodeData.roleName}
     },
     reback() {
       this.$emit('closeNodeDisplay')

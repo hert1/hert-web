@@ -1,27 +1,27 @@
 <template>
   <div class="app-container">
     <el-dialog title="角色" :visible.sync="editFormVisible" :before-close='close'>
-      <el-form :model="nodeData" ref="refForm" :rules="rules">
+      <el-form :model="cache_data" ref="refForm" :rules="rules">
         <el-form-item label="主键" :label-width="formLabelWidth" style="display: none">
-          <el-input v-model="nodeData.id" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.id" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级主键" :label-width="formLabelWidth" style="display: none">
-          <el-input v-model="nodeData.parentId" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.parentId" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级" :label-width="formLabelWidth">
-          <el-input v-model="nodeData.parentName" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.parentName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色名" :label-width="formLabelWidth" prop="roleName">
-          <el-input v-model="nodeData.roleName" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.roleName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色别名" :label-width="formLabelWidth" prop="roleAlias">
-          <el-input v-model="nodeData.roleAlias" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.roleAlias" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="权限" :label-width="formLabelWidth">
-          <treeselect v-model="nodeData.permissions" :multiple="true" :normalizer="normalizer"  :options="options" />
+          <treeselect v-model="cache_data.permissions" :multiple="true" :normalizer="normalizer"  :options="options" />
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth">
-          <el-input v-model="nodeData.sort" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.sort" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -59,18 +59,18 @@ export default {
           children: node.children,
         }
       },
+      cache_data: {},
     }
   },
   props: {
-    nodeData: {},
+    data: {},
     editFormVisible: Boolean
   },
 
   watch: {
-
-  },
-
-  mounted() {
+    data(new_val, old_val) {
+      this.cache_data = JSON.parse(JSON.stringify(new_val))
+    }
   },
 
   created() {
@@ -87,7 +87,7 @@ export default {
     submit() {
       this.$refs.refForm.validate((valid) => {
         if (valid) {
-          this.$emit('handleSubmit', this.nodeData)
+          this.$emit('handleSubmit', this.cache_data)
         } else {
           return false;
         }
