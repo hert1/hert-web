@@ -1,21 +1,21 @@
 <template>
   <div class="app-container">
     <el-dialog title="部门" :visible.sync="editFormVisible" :before-close='close'>
-      <el-form :model="data"  :label-width="formLabelWidth" ref="refForm" :rules="rules" >
+      <el-form :model="cache_data"  :label-width="formLabelWidth" ref="refForm" :rules="rules" >
         <el-form-item label="主键" style="display: none"  >
           <el-input v-model="data.id" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: " >
-          <treeselect v-model="data.parentId" :normalizer="normalizer"  :options="options" />
+          <treeselect v-model="cache_data.parentId" :normalizer="normalizer"  :options="options" />
         </el-form-item>
         <el-form-item label="简称: " prop="deptName">
-          <el-input v-model="data.deptName" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.deptName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="全称: " >
-          <el-input v-model="data.fullName" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.fullName" prop="fullName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="排序: " >
-          <el-input v-model="data.sort" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.sort" prop="sort" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -51,6 +51,7 @@ export default {
           children: node.children,
         }
       },
+      cache_data: {},
     };
   },
   props: {
@@ -60,6 +61,9 @@ export default {
   },
 
   watch: {
+    data(new_val, old_val) {
+      this.cache_data = new_val;
+    }
   },
 
   mounted() {

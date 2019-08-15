@@ -1,43 +1,43 @@
 <template>
   <div class="app-container">
     <el-dialog title="用户" :visible.sync="editFormVisible" :before-close='close'>
-      <el-form :model="data"  :label-width="formLabelWidth" ref="refForm" :rules="rules" >
+      <el-form :model="cache_data"  :label-width="formLabelWidth" ref="refForm" :rules="rules" >
         <el-form-item label="主键" style="display: none" >
-          <el-input v-model="data.id" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.id" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: " style="display: none" >
-          <el-input v-model="data.parentId" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.parentId" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="上级: " >
-          <el-input v-model="data.parentName" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.parentName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="账号"  >
-          <el-input v-model="data.account" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.account" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="昵称: " prop="deptName">
-          <el-input v-model="data.name" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.name" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="真名: " >
-          <el-input v-model="data.realName" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.realName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="性别: " >
-          <el-select v-model="data.sex"   placeholder="请选择" style="width: 100%">
+          <el-select v-model="cache_data.sex"   placeholder="请选择" style="width: 100%">
             <el-option label="男" :key = 1 value = 1 > </el-option>
             <el-option label="女" :key = 2 value = 2> </el-option>
             <el-option label="保密" :key = 3 value = 3> </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="手机: " >
-          <el-input v-model="data.phone" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.phone" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="email: " >
-          <el-input v-model="data.email" auto-complete="off"></el-input>
+          <el-input v-model="cache_data.email" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色: " >
-          <treeselect v-model="data.roles" :multiple="true" :normalizer="roleNormalizer"  :options="roleTreeData" />
+          <treeselect v-model="cache_data.roles" :multiple="true" :normalizer="roleNormalizer"  :options="roleTreeData" />
         </el-form-item>
         <el-form-item label="部门: " >
-          <treeselect v-model="data.depts" :multiple="true" :normalizer="deptNormalizer"  :options="deptTreeData" />
+          <treeselect v-model="cache_data.depts" :multiple="true" :normalizer="deptNormalizer"  :options="deptTreeData" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -79,6 +79,7 @@
           children: node.children,
         }
       },
+      cache_data: {},
     };
   },
   props: {
@@ -87,12 +88,10 @@
   },
 
   watch: {
-  },
-
-  mounted() {
-
-  },
-  updated() {
+    cache_data(new_val, old_val) {
+      console.log(new_val)
+    //  this.cache_data = new_val
+    }
   },
 
   created() {
