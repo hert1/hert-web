@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import queryConstants from '@/utils/queryConstants'
 
 Vue.use(Router)
+Vue.prototype.QUERY_CONSTANTS = queryConstants;
 
 import Layout from '@/layout'
 export const asyncRoutes = []
