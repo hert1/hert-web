@@ -20,8 +20,9 @@ function hasPermission(permissions, route) {
  * @param routes
  */
 export function generaMenu(routes, data) {
+  console.log('router',data)
   data.forEach(item => {
-    const menu = {
+    let menu = {
       path: item.path,
       component: !item.source ? Layout : () => import( `@/views${item.source}/index`),
       children: [],

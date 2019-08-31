@@ -9,11 +9,20 @@ export function login(data) {
   })
 }
 
-export function checkLogin() {
+export function checkLogin(data) {
   return request({
     url: '/hert-auth/checkLogin',
     method: 'post',
-    data: {"grantType": "refresh_token"}
+    data: data
+
+  })
+}
+
+export function refreshToken(data) {
+  return request({
+    url: '/hert-auth/refreshToken',
+    method: 'post',
+    data: data
 
   })
 }

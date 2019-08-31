@@ -7,7 +7,10 @@
         <el-button style="float: right; padding: 3px 3px" type="primary" icon="el-icon-edit" circle @click="openEditModal"></el-button>
         <el-button style="float: right; padding: 3px 3px" type="primary" icon="el-icon-plus" circle @click="openAddModal"></el-button>
       </div>
-      <span>{{nodeData}}</span>
+      <el-row :gutter="20">
+        <el-col :span="12"><span>上级：{{nodeData.parentName}}</span></el-col>
+        <el-col :span="12"><span>角色：{{nodeData.parentName}}</span></el-col>
+      </el-row>
     </el-card>
     <EditForm @handleSubmit="handleSubmit"
               @closeEditForm="closeEditForm"

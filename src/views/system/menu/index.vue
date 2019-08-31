@@ -2,6 +2,8 @@
   <div class="app-container">
     <el-button type="primary" round icon="el-icon-plus"
       @click="handleAdd(0, {'id': 0, name: '顶级'})" style="margin-bottom: 20px">添加</el-button>
+    <el-button style="float: right;margin-top: 10px" round size="mini" icon="el-icon-refresh"
+               @click="fetchTree()"></el-button>
       <el-table
       :data="data"
       ref="multipleTable"
