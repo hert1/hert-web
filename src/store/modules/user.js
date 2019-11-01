@@ -42,7 +42,7 @@ const actions = {
         setCode(data)
         resolve()
       }).catch(error => {
-        reject(error || "服务器超时")
+        reject(error || '服务器超时')
       })
     })
   },
@@ -50,7 +50,7 @@ const actions = {
   // get user info
   checkLogin({ commit, state }) {
     return new Promise((resolve, reject) => {
-      checkLogin({"grantType": "check_login", "code": getCode()}).then(response => {
+      checkLogin({ 'grantType': 'check_login', 'code': getCode() }).then(response => {
         const { data } = response
         if (!data) {
           reject('验证过期，请重新登录！！！')
@@ -77,7 +77,7 @@ const actions = {
   // refreshToken
   refreshToken({ commit, state }) {
     return new Promise((resolve, reject) => {
-      refreshToken({"grantType": "refresh_token", "refreshToken": getRefreshToken()}).then(response => {
+      refreshToken({ 'grantType': 'refresh_token', 'refreshToken': getRefreshToken() }).then(response => {
         const { data } = response
         if (!data) {
           reject('验证过期，请重新登录！！！')
@@ -128,12 +128,8 @@ const actions = {
       removeToken()
       resolve()
     })
-  },
-
+  }
 }
-
-
-
 export default {
   namespaced: true,
   state,

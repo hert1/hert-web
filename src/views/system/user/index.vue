@@ -17,7 +17,6 @@
         </el-form-item>
       </el-form>
     </div>
-
     <router-link :to="{path:'/userInfo'}">
       <el-button type="primary" round style="margin-bottom: 20px;">个人信息</el-button>
     </router-link>
@@ -94,7 +93,7 @@ export default {
     return {
       page: {},
       listLoading: true,
-      query: {},
+      query: {}
     }
   },
   created() {
@@ -117,20 +116,20 @@ export default {
     },
     resetPassword(index, row) {
       resetPassword([row.id]).then(response => {
-        this.$message.success("密码重置成功！")
-      }).catch(() => {this.$message.error("密码重置失败！")})
+        this.$message.success('密码重置成功！')
+      }).catch(() => { this.$message.error('密码重置失败！') })
     },
     resetQuery() {
-      this.query = {};
+      this.query = {}
       this.fetchData()
     },
     fetchData(new_query) {
       this.listLoading = true
-      new_query = {...new_query, ...this.query}
+      new_query = { ...new_query, ...this.query }
       fetchList(new_query).then(response => {
         this.page = response.data
         this.listLoading = false
-      }).catch(() => {this.listLoading = false})
+      }).catch(() => { this.listLoading = false })
     }
   }
 }

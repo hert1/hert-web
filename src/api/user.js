@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import qs from 'qs'
 
 export function login(data) {
   return request({
@@ -62,7 +61,7 @@ export function remove(data) {
   return request({
     url: '/hert-base/user/remove',
     method: 'delete',
-    data:  {ids: data}
+    data: { ids: data }
   })
 }
 
@@ -70,6 +69,6 @@ export function resetPassword(data) {
   return request({
     url: '/hert-base/user/reset-password',
     method: 'post',
-    data:  {ids: data}
+    data: { ids: data }
   })
 }

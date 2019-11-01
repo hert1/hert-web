@@ -26,7 +26,7 @@
       </span>
       </el-tree>
     </el-card>
-    <Info v-if="nodeInfoVisible" :nodeData="nodeData" @closeNodeDisplay="closeNodeDisplay" />
+    <Info v-if="nodeInfoVisible" :nodeData="nodeData" @closeNodeDisplay="closeNodeDisplay"/>
   </div>
 </template>
 
@@ -34,6 +34,7 @@
 
 import { fetchTree, remove } from '@/api/role'
 import Info from './components/info'
+
 export default {
 
   components: {
@@ -46,7 +47,7 @@ export default {
       nodeInfoVisible: false,
       props: {
         label: 'roleName'
-      },
+      }
     }
   },
   created() {
@@ -60,11 +61,11 @@ export default {
       this.nodeData = data; this.nodeInfoVisible = true
     },
     closeNodeDisplay() {
-      this.nodeInfoVisible = false;
-      this.fetchTreeData();
+      this.nodeInfoVisible = false
+      this.fetchTreeData()
     },
     remove() {
-      const ids = this.$refs.tree.getCheckedKeys();
+      const ids = this.$refs.tree.getCheckedKeys()
       if (!ids.length) return
       remove(ids).then(response => {
         this.$message({
@@ -72,14 +73,14 @@ export default {
           message: response.message || '操作成功'
         })
         this.fetchTreeData()
-      }).catch(() => {this.treeDataLoading = false});
+      }).catch(() => { this.treeDataLoading = false })
     },
     fetchTreeData() {
       this.treeDataLoading = true
       fetchTree().then(response => {
         this.treeData = response.data
         this.treeDataLoading = false
-      }).catch(() => {this.treeDataLoading = false})
+      }).catch(() => { this.treeDataLoading = false })
     }
   }
 }

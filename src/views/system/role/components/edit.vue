@@ -33,9 +33,9 @@
 </template>
 
 <script>
- import Treeselect from '@riophae/vue-treeselect'
- import '@riophae/vue-treeselect/dist/vue-treeselect.css'
- import { fetchTree} from '@/api/menu'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import { fetchTree } from '@/api/menu'
 export default {
   components: {
     Treeselect,

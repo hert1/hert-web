@@ -38,17 +38,18 @@
         </template>
       </el-table-column>
     </el-table>
-    <EditForm @handleSubmit="handleSubmit"
-              @closeEditForm="closeEditForm"
-              :editFormVisible="editFormVisible"
-              :options="options"
-              :data="editData"/>
+    <EditForm
+      @handleSubmit="handleSubmit"
+      @closeEditForm="closeEditForm"
+      :editFormVisible="editFormVisible"
+      :options="options"
+      :data="editData"/>
   </div>
 </template>
 
 <script>
 import { fetchTree, remove, submit } from '@/api/dept'
-import { generateList, } from '@/utils/index'
+import { generateList } from '@/utils/index'
 import EditForm from './components/edit'
 
 export default {
@@ -62,7 +63,7 @@ export default {
       confirmVisible: false,
       listLoading: true,
       editData: {},
-      editFormVisible: false,
+      editFormVisible: false
     }
   },
   created() {
@@ -70,7 +71,7 @@ export default {
   },
   methods: {
     closeEditForm() {
-      this.editFormVisible = false;
+      this.editFormVisible = false
       this.editData = {}
     },
     handleSubmit(value) {
@@ -79,21 +80,21 @@ export default {
           type: 'success',
           message: response.message || '操作成功'
         })
-        this.editFormVisible = false;
+        this.editFormVisible = false
         this.fetchTree()
       })
     },
     handleAdd(index, row) {
-      this.editFormVisible = true;
-      this.editData = {'parentId': row.id, parentName: row.deptName};
+      this.editFormVisible = true
+      this.editData = { 'parentId': row.id, parentName: row.deptName }
     },
     handleEdit(index, row) {
-      this.editFormVisible = true;
-      this.editData = row;
+      this.editFormVisible = true
+      this.editData = row
     },
     handleDelete(index, row) {
-      const selectRow = generateList(row.children);
-      let ids = [row.id];
+      const selectRow = generateList(row.children)
+      const ids = [row.id]
       selectRow && selectRow.map(item => ids.push(item.id))
       this.$confirm('此操作将删除该菜单下的所有菜单, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -105,32 +106,32 @@ export default {
           this.$message({
             type: 'success',
             message: response.message || '操作成功'
-          });
+          })
           this.fetchTree()
-        }).catch(() => {this.listLoading = false})
+        }).catch(() => { this.listLoading = false })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
+        })
+      })
     },
-    tableRowClassName({row, rowIndex}) {
+    tableRowClassName({ row, rowIndex }) {
       if (row.category === 1) {
-        return 'menu';
+        return 'menu'
       } else if (row.category === 2) {
-        return 'button';
+        return 'button'
       }
-      return '';
-  },
+      return ''
+    },
     fetchTree() {
       this.listLoading = true
-      this.options = [{deptName: '顶级', id: 0 }],
+      this.options = [{ deptName: '顶级', id: 0 }]
       fetchTree().then(response => {
         this.data = response.data
         response.data.map(item => this.options.push(item))
         this.listLoading = false
-      }).catch(() => {this.listLoading = false})
+      }).catch(() => { this.listLoading = false })
     }
   }
 }

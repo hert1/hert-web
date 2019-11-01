@@ -20,14 +20,14 @@ function hasPermission(permissions, route) {
  * @param routes
  */
 export function generaMenu(routes, data) {
-  console.log('router',data)
+  console.log('router', data)
   data.forEach(item => {
-    let menu = {
+    const menu = {
       path: item.path,
-      component: !item.source ? Layout : () => import( `@/views${item.source}/index`),
+      component: !item.source ? Layout : () => import(`@/views${item.source}/index`),
       children: [],
       name: item.name,
-      meta: { title: item.name, icon: item.icon}
+      meta: { title: item.name, icon: item.icon }
     }
     if (item.children) {
       generaMenu(menu.children, item.children)
@@ -83,7 +83,7 @@ const actions = {
           data = response.data
           Object.assign(loadMenuData, data)
           generaMenu(asyncRoutes, loadMenuData)
-          let accessedRoutes = filterAsyncRoutes(asyncRoutes, permissions)
+          const accessedRoutes = filterAsyncRoutes(asyncRoutes, permissions)
           accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
           commit('SET_ROUTES', accessedRoutes)
           resolve(accessedRoutes)
